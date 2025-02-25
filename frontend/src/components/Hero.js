@@ -13,7 +13,7 @@ const Hero = () => {
   const onSubmit = async (data) => {
     try {
       // Отправка данных на сервер
-      const response = await fetch('http://localhost:5000/api/saveUser', {
+      const response = await fetch('https://electronics-repair-app.onrender.com/api/saveUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,13 +21,15 @@ const Hero = () => {
         body: JSON.stringify(data),
       });
 
-      // Логируем ответ от сервера
+      // Получаем результат от сервера
       const result = await response.json();
-      console.log('Ответ от сервера:', result);
 
+      // Проверяем успешность ответа
       if (!response.ok) {
-        throw new Error('Ошибка при отправке данных');
+        throw new Error(`Ошибка при отправке данных: ${result.message || 'Неизвестная ошибка'}`);
       }
+
+      console.log('Ответ от сервера:', result);
 
       // После успешной отправки, скрываем форму и показываем уведомление
       setFormVisible(false);
@@ -41,6 +43,7 @@ const Hero = () => {
       console.error('Ошибка:', error);
     }
   };
+
 
   // Элементы анимации
   const titleVariants = {
