@@ -45,7 +45,7 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="contact" className="bg-gray-50 py-20" data-aos="fade-up">
+    <section id="contact" className="bg-gray-50 py-10" data-aos="fade-up">
       <div className="container mx-auto text-center">
         <h3 className="text-3xl font-semibold mb-6">Оставьте заявку</h3>
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 shadow-lg rounded-lg">

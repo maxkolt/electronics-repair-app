@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhoneIcon, MailIcon, LocationMarkerIcon } from '@heroicons/react/outline'; // Импортируем LocationMarkerIcon
+import { PhoneIcon, MailIcon } from '@heroicons/react/outline';
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'; // Иконки для Telegram и WhatsApp
 
 const Header = () => {
@@ -12,7 +12,7 @@ const Header = () => {
         {/* Иконки справа */}
         <div className="flex space-x-5">
           <a
-            href="tel:+1234567890"
+            href="tel:+79255961151"
             className="text-white hover:text-gray-400 transform hover:scale-110 transition duration-300"
             aria-label="Позвонить"
           >
@@ -27,14 +27,14 @@ const Header = () => {
             <FaTelegramPlane className="w-6 h-6"/>
           </a>
           <a
-            href="https://wa.me/1234567890"
+            href="https://wa.me/+79255961151"
             className="text-white hover:text-gray-400 transform hover:scale-110 transition duration-300"
             aria-label="WhatsApp"
           >
             <FaWhatsapp className="w-6 h-6"/>
           </a>
           <a
-            href="mailto:info@repair.com"
+            href="12345kolt@mail.ru"
             className="text-white hover:text-gray-400 transform hover:scale-110 transition duration-300"
             aria-label="Написать на почту"
           >
