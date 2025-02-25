@@ -20,7 +20,7 @@ const Header = () => {
           </a>
           {/* Иконки для Telegram и WhatsApp */}
           <a
-            href="https://t.me/your_channel"
+            href="https://t.me/OnORepair"
             className="text-white hover:text-gray-400 transform hover:scale-110 transition duration-300"
             aria-label="Telegram"
           >
@@ -34,7 +34,7 @@ const Header = () => {
             <FaWhatsapp className="w-6 h-6"/>
           </a>
           <a
-            href="12345kolt@mail.ru"
+            href="12345kolt@gmail.com"
             className="text-white hover:text-gray-400 transform hover:scale-110 transition duration-300"
             aria-label="Написать на почту"
           >
