@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import mainImage from '../assets/главная.jpg'; // Импортируем картинку
 
 const Hero = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {register, handleSubmit, formState: {errors}} = useForm();
   const [formVisible, setFormVisible] = useState(true);  // Состояние для формы
   const [buttonVisible, setButtonVisible] = useState(true);  // Состояние для кнопки
   const [notificationVisible, setNotificationVisible] = useState(false);  // Состояние для уведомления
@@ -47,38 +47,38 @@ const Hero = () => {
 
   // Элементы анимации
   const titleVariants = {
-    hidden: { opacity: 0, y: -50 },
+    hidden: {opacity: 0, y: -50},
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1, ease: 'easeOut', delay: 0.5 } // Добавили задержку и смягчение
+      transition: {duration: 1, ease: 'easeOut', delay: 0.5} // Добавили задержку и смягчение
     },
   };
 
   const formVariants = {
-    hidden: { opacity: 0, y: -70 },
+    hidden: {opacity: 0, y: -70},
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeInOut', delay: 0.3 } // Сделали форму чуть быстрее
+      transition: {duration: 0.8, ease: 'easeInOut', delay: 0.3} // Сделали форму чуть быстрее
     },
   };
 
   const buttonVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: {opacity: 0, y: 50},
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut', delay: 0.7 } // Кнопку делаем самой последней
+      transition: {duration: 0.8, ease: 'easeOut', delay: 0.7} // Кнопку делаем самой последней
     },
   };
 
   const notificationVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
+    hidden: {opacity: 0, scale: 0.9},
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5, ease: 'easeOut' } // Быстрое появление уведомления
+      transition: {duration: 0.5, ease: 'easeOut'} // Быстрое появление уведомления
     },
   };
 
@@ -90,12 +90,19 @@ const Hero = () => {
       style={{
         backgroundImage: `url(${mainImage})`,
         backgroundSize: 'cover', // Растягиваем изображение, сохраняя пропорции
-        backgroundPosition: 'center 60%', // Центрируем изображение по горизонтали и вертикали
-        height: 'calc(75vh + 40px)', // Увеличиваем высоту блока
       }}
     >
       {/* Затемняем фон */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
+
+      <style jsx>{`
+          @media (min-width: 1024px) {
+              /* Для десктопов и больше: увеличиваем высоту */
+              section#hero {
+                  height: calc(80vh + 20px); 
+              }
+          }
+      `}</style>
 
       <Parallax speed={-10}>
         <motion.div
@@ -105,7 +112,7 @@ const Hero = () => {
           variants={titleVariants}
         >
           {/* Заголовок */}
-          <h2 className="text-4xl text-gray-200 sm:text-5xl font-bold sm:font-semibold -mt-12">
+          <h2 className="text-3xl text-gray-200 sm:text-5xl font-bold sm:font-semibold sm:mb-0 mb-20">
             Вернем жизнь вашей технике быстро и с гарантией!
           </h2>
         </motion.div>
@@ -151,13 +158,13 @@ const Hero = () => {
         {/* Кнопка "Заказать мастера", расположенная внизу */}
         {buttonVisible && (
           <motion.div
-            className="mt-8"
+            className="mt-8 mb-8"
             initial="hidden"
             animate="visible"
             variants={buttonVariants}
           >
             <button
-              className="relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
+              className=" relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
               onClick={handleSubmit(onSubmit)} // Обработчик для отправки данных
             >
               Заказать мастера
