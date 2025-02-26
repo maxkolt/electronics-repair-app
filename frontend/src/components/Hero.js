@@ -111,7 +111,7 @@ const Hero = () => {
       </Parallax>
 
       {/* Контейнер для формы и кнопки */}
-      <div className="flex flex-col justify-center items-center mt-10 lg:mt-32 w-full px-3 sm:px-3">
+      <div className="flex flex-col justify-center items-center lg:mt-32 w-full px-3 sm:px-3">
         {/* Форма */}
         {formVisible && (
           <motion.div
