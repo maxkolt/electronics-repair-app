@@ -93,7 +93,7 @@ const Services = () => {
   return (
     <section id="services" className="py-12 bg-gray-800">
       <div className="container mx-auto text-center mb-14 px-4">
-        <h2 className="text-3xl font-bold text-white mb-8">Виды техники для ремонта</h2>
+        <h2 className="text-3xl text-white mb-8">Виды техники для ремонта</h2>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-3 mt-12 px-4 md:px-40">
         {services.map((service, index) => (
