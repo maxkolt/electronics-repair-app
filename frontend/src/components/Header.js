@@ -10,7 +10,7 @@ const Header = () => {
         <h1 className="text-2xl font-bold">
           <a href="#hero" className="flex items-center">
             <span className="font-bold text-primary">OnO</span>
-            <span className="font-normal text-secondary">Repair</span>
+            <span className="font-normal text-gray-200 text-secondary">Repair</span>
           </a>
         </h1>
 
