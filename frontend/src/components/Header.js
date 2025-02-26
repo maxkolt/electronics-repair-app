@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhoneIcon, MailIcon } from '@heroicons/react/outline';
+import { PhoneIcon } from '@heroicons/react/outline';
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'; // Иконки для Telegram и WhatsApp
 
 const Header = () => {
