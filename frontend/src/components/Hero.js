@@ -90,36 +90,28 @@ const Hero = () => {
       style={{
         backgroundImage: `url(${mainImage})`,
         backgroundSize: 'cover', // Растягиваем изображение, сохраняя пропорции
+        backgroundPosition: 'center 60%',
       }}
     >
       {/* Затемняем фон */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
-      <style jsx>{`
-          @media (min-width: 1024px) {
-              /* Для десктопов и больше: увеличиваем высоту */
-              section#hero {
-                  height: calc(80vh + 20px); 
-              }
-          }
-      `}</style>
-
       <Parallax speed={-10}>
         <motion.div
-          className="container mx-auto text-center relative z-10 text-white flex flex-col justify-between py-8 sm:py-4 h-full sm:h-auto"
+          className="container text-gray-200 mx-auto text-center relative z-10 text-white flex flex-col justify-between py-8 sm:py-4 h-full sm:h-auto"
           initial="hidden"
           animate="visible"
           variants={titleVariants}
         >
           {/* Заголовок */}
-          <h2 className="text-3xl text-gray-200 sm:text-5xl font-bold sm:font-semibold sm:mb-0 mb-20">
+          <h2 className="text-3xl text-gray-200 sm:text-5xl font-bold sm:font-semibold sm:mb-0 lg:mb-24 mb-20">
             Вернем жизнь вашей технике быстро и с гарантией!
           </h2>
         </motion.div>
       </Parallax>
 
       {/* Контейнер для формы и кнопки */}
-      <div className="flex flex-col justify-center items-center min-h-full mt-10 lg:mt-20 w-full px-3 sm:px-3">
+      <div className="flex flex-col justify-center items-center mt-10 lg:mt-32 w-full px-3 sm:px-3">
         {/* Форма */}
         {formVisible && (
           <motion.div
@@ -164,7 +156,7 @@ const Hero = () => {
             variants={buttonVariants}
           >
             <button
-              className=" relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
+              className="relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
               onClick={handleSubmit(onSubmit)} // Обработчик для отправки данных
             >
               Заказать мастера
@@ -175,7 +167,7 @@ const Hero = () => {
         {/* Уведомление о успешной отправке */}
         {notificationVisible && (
           <motion.div
-            className="mt-4 z-10 bg-green-500 bg-opacity-50 text-white p-8 rounded-md shadow-lg text-3xl"
+            className="mb-8 z-10 bg-green-500 bg-opacity-50 text-white p-8 rounded-md shadow-lg text-3xl"
             initial="hidden"
             animate="visible"
             variants={notificationVariants}
@@ -184,6 +176,20 @@ const Hero = () => {
           </motion.div>
         )}
       </div>
+
+      <style jsx>{`
+        /* Для мобильных и планшетов */
+        #hero {
+          min-height: calc(50vh + 40px); /* Для мобильных и планшетов */
+        }
+
+        /* Для десктопов */
+        @media (min-width: 1024px) {
+          #hero {
+            min-height: calc(80vh + 40px); /* Увеличиваем высоту блока для десктопов */
+          }
+        }
+      `}</style>
     </section>
   );
 };
