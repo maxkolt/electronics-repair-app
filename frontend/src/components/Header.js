@@ -33,13 +33,6 @@ const Header = () => {
           >
             <FaWhatsapp className="w-6 h-6"/>
           </a>
-          <a
-            href="12345kolt@gmail.com"
-            className="text-white hover:text-gray-400 transform hover:scale-110 transition duration-300"
-            aria-label="Написать на почту"
-          >
-            <MailIcon className="w-6 h-6"/>
-          </a>
         </div>
       </div>
     </header>

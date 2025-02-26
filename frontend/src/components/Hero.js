@@ -48,18 +48,40 @@ const Hero = () => {
   // Элементы анимации
   const titleVariants = {
     hidden: { opacity: 0, y: -50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1, ease: 'easeOut', delay: 0.5 } // Добавили задержку и смягчение
+    },
   };
 
   const formVariants = {
-    hidden: { opacity: 0, y: -50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+    hidden: { opacity: 0, y: -70 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeInOut', delay: 0.3 } // Сделали форму чуть быстрее
+    },
   };
 
   const buttonVariants = {
     hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeOut', delay: 0.7 } // Кнопку делаем самой последней
+    },
   };
+
+  const notificationVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.5, ease: 'easeOut' } // Быстрое появление уведомления
+    },
+  };
+
 
   return (
     <section
@@ -73,7 +95,7 @@ const Hero = () => {
       }}
     >
       {/* Затемняем фон */}
-      <div className="absolute inset-0 bg-black opacity-60"></div>
+      <div className="absolute inset-0 bg-black opacity-50"></div>
 
       <Parallax speed={-10}>
         <motion.div
@@ -83,42 +105,42 @@ const Hero = () => {
           variants={titleVariants}
         >
           {/* Заголовок */}
-          <h2 className="text-4xl sm:text-5xl font-bold sm:font-semibold -mt-12">
+          <h2 className="text-4xl text-gray-200 sm:text-5xl font-bold sm:font-semibold -mt-12">
             Вернем жизнь вашей технике быстро и с гарантией!
           </h2>
         </motion.div>
       </Parallax>
 
       {/* Контейнер для формы и кнопки */}
-      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col justify-center w-full items-center pl-3 pr-3 sm:px-4 md:w-96">
+      <div className="flex flex-col justify-center items-center min-h-full mt-10 lg:mt-20 w-full px-3 sm:px-3">
         {/* Форма */}
         {formVisible && (
           <motion.div
-            className="bg-gray-800 bg-opacity-80 p-6 rounded-md text-white shadow-lg w-full md:w-96"
+            className="relative z-10 bg-gray-800 bg-opacity-80 p-6 rounded-md text-white shadow-lg w-full md:w-96"
             initial="hidden"
             animate="visible"
             variants={formVariants}
           >
-            <h3 className="text-2xl mb-4 text-center">Оставьте заявку</h3>
+            <h3 className="text-2xl text-gray-200 mb-6 text-center">Оставьте заявку</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4">
-                <label htmlFor="name" className="block mb-2">Имя</label>
+              <div className="mb-5">
                 <input
                   id="name"
                   type="text"
+                  placeholder="Ваше имя"
                   className="w-full p-3 bg-gray-700 text-white rounded-md"
-                  {...register('name', { required: 'Имя обязательно' })}
+                  {...register('name', {required: 'Имя обязательно'})}
                 />
                 {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
               </div>
 
               <div className="mb-4">
-                <label htmlFor="phone" className="block mb-2">Ваш номер</label>
                 <input
                   id="phone"
-                  type="text"
+                  type="tel"
+                  placeholder="Ваш телефон"
                   className="w-full p-3 bg-gray-700 text-white rounded-md"
-                  {...register('phone', { required: 'Номер обязателен' })}
+                  {...register('phone', {required: 'Номер обязателен'})}
                 />
                 {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
               </div>
@@ -129,13 +151,13 @@ const Hero = () => {
         {/* Кнопка "Заказать мастера", расположенная внизу */}
         {buttonVisible && (
           <motion.div
-            className="mt-6"
+            className="mt-8"
             initial="hidden"
             animate="visible"
             variants={buttonVariants}
           >
             <button
-              className="bg-gray-900 text-white py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
+              className="relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
               onClick={handleSubmit(onSubmit)} // Обработчик для отправки данных
             >
               Заказать мастера
@@ -146,10 +168,10 @@ const Hero = () => {
         {/* Уведомление о успешной отправке */}
         {notificationVisible && (
           <motion.div
-            className="mt-4 bg-green-500 bg-opacity-50 text-white p-8 rounded-md shadow-lg text-3xl"
+            className="mt-4 z-10 bg-green-500 bg-opacity-50 text-white p-8 rounded-md shadow-lg text-3xl"
             initial="hidden"
             animate="visible"
-            transition={{ duration: 0.5 }}
+            variants={notificationVariants}
           >
             <p className="text-center">Вам перезвонят!</p>
           </motion.div>
