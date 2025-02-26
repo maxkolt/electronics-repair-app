@@ -176,20 +176,6 @@ const Hero = () => {
           </motion.div>
         )}
       </div>
-
-      <style jsx>{`
-        /* Для мобильных и планшетов */
-        #hero {
-          min-height: calc(50vh + 40px); /* Для мобильных и планшетов */
-        }
-
-        /* Для десктопов */
-        @media (min-width: 1024px) {
-          #hero {
-            min-height: calc(80vh + 40px); /* Увеличиваем высоту блока для десктопов */
-          }
-        }
-      `}</style>
     </section>
   );
 };
