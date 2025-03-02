@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
+const sitemapRouter = require("./routes/sitemap");
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error(err));
 
 // Используем маршруты
+app.use("/", sitemapRouter);
 app.use('/api', userRoutes);
 
 app.get('/healthz', (req, res) => {
