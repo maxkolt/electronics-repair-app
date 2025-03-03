@@ -32,6 +32,12 @@ app.get('/healthz', (req, res) => {
   res.status(200).send('OK');
 });
 
+app._router.stack.forEach((r) => {
+  if (r.route && r.route.path) {
+    console.log(`Route: ${r.route.path}`);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
