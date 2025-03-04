@@ -177,15 +177,11 @@ const Hero = () => {
             variants={buttonVariants}
           >
             <button
-              className={`relative z-10 py-3 px-6 rounded-full text-xl transition duration-300 ${
-                isLoading
-                  ? "bg-orange-500 text-gray-200 cursor-not-allowed"
-                  : "bg-gray-900 text-gray-200 hover:bg-orange-600"
-              }`}
+              className="relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
               onClick={handleClick}
-              disabled={isLoading}
+              disabled={isLoading} // Блокируем кнопку во время загрузки
             >
-              {isLoading ? `Загрузка${loadingDots}` : "Заказать мастера"}
+              {isLoading ? "Загрузка..." : "Заказать мастера"}
             </button>
           </motion.div>
         )}
