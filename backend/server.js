@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const sitemapRouter = require("./routes/sitemap");
+const path = require("path");
 
 dotenv.config();
 
@@ -18,6 +19,14 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
+
+// Раздача статических файлов (важно!)
+app.use(express.static(path.join(__dirname, "public")));
+
+// Раздача sitemap.xml
+app.get("/sitemap.xml", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "sitemap.xml"));
+});
 
 // Подключение к базе данных
 mongoose.connect(process.env.MONGO_URI)
