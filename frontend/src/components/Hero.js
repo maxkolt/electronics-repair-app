@@ -125,7 +125,7 @@ const Hero = () => {
         {buttonVisible && (
           <motion.div className="mt-8 mb-8">
             <button
-              className="relative z-10 bg-gray-900 w-[180px] text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
+              className="relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
               onClick={handleSubmit(onSubmit)} // Теперь handleSubmit сразу вызывает onSubmit
               disabled={isLoading}
             >
