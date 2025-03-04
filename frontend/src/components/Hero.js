@@ -181,7 +181,7 @@ const Hero = () => {
               onClick={handleClick}
               disabled={isLoading} // Блокируем кнопку во время загрузки
             >
-              {isLoading ? "Загрузка..." : "Заказать мастера"}
+              {isLoading ? `Загрузка${loadingDots}` : "Заказать мастера"}
             </button>
           </motion.div>
         )}
