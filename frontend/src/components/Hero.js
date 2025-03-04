@@ -9,11 +9,17 @@ const Hero = () => {
   const [formVisible, setFormVisible] = useState(true);  // Состояние для формы
   const [buttonVisible, setButtonVisible] = useState(true);  // Состояние для кнопки
   const [notificationVisible, setNotificationVisible] = useState(false);  // Состояние для уведомления
+  const [isLoading, setIsLoading] = useState(false);
 
+  const handleClick = async () => {
+    setIsLoading(true); // Начинаем загрузку
+    await handleSubmit(onSubmit)(); // Выполняем отправку формы
+    setIsLoading(false); // Останавливаем загрузку после завершения
+  };
   const onSubmit = async (data) => {
     try {
       // Отправка данных на сервер
-      const response = await fetch('https://electronics-repair-app.onrender.com/api/saveUser', {
+      const response = await fetch('https://api.onorrem.ru/api/saveUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,13 +162,19 @@ const Hero = () => {
             variants={buttonVariants}
           >
             <button
-              className="relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
-              onClick={handleSubmit(onSubmit)} // Обработчик для отправки данных
+              className={`relative z-10 py-3 px-6 rounded-full text-xl transition duration-300 ${
+                isLoading
+                  ? "bg-orange-500 text-white cursor-not-allowed"
+                  : "bg-gray-900 text-gray-200 hover:bg-orange-600"
+              }`}
+              onClick={handleClick}
+              disabled={isLoading} // Отключаем кнопку во время загрузки
             >
-              Заказать мастера
+              {isLoading ? "Загрузка..." : "Заказать мастера"}
             </button>
           </motion.div>
         )}
+
 
         {/* Уведомление о успешной отправке */}
         {notificationVisible && (
