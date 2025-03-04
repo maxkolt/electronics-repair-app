@@ -5,35 +5,30 @@ import { useForm } from 'react-hook-form';
 import mainImage from '../assets/главная.jpg'; // Импортируем картинку
 
 const Hero = () => {
-  const {register, handleSubmit, formState: {errors}} = useForm();
-  const [formVisible, setFormVisible] = useState(true);  // Состояние для формы
-  const [buttonVisible, setButtonVisible] = useState(true);  // Состояние для кнопки
-  const [notificationVisible, setNotificationVisible] = useState(false);  // Состояние для уведомления
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [formVisible, setFormVisible] = useState(true);
+  const [buttonVisible, setButtonVisible] = useState(true);
+  const [notificationVisible, setNotificationVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingDots, setLoadingDots] = useState("");
 
-  // Анимация точек во время загрузки
+  // Анимация точек "..." во время загрузки
   useEffect(() => {
     if (isLoading) {
       const interval = setInterval(() => {
         setLoadingDots((prev) => (prev.length < 3 ? prev + "." : ""));
-      }, 300); // Интервал смены точек (0.3 сек)
+      }, 300); // Интервал 0.3 сек
 
       return () => clearInterval(interval);
     } else {
-      setLoadingDots(""); // Сброс после завершения загрузки
+      setLoadingDots(""); // Сброс после загрузки
     }
   }, [isLoading]);
 
-  const handleClick = async () => {
-    setIsLoading(true);
-    await handleSubmit(onSubmit)(); // Отправляем форму
-    setIsLoading(false);
-  };
-
   const onSubmit = async (data) => {
+    setIsLoading(true); // Устанавливаем состояние загрузки
+
     try {
-      // Отправка данных на сервер
       const response = await fetch('https://api.onorrem.ru/api/saveUser', {
         method: 'POST',
         headers: {
@@ -42,67 +37,30 @@ const Hero = () => {
         body: JSON.stringify(data),
       });
 
-      // Получаем результат от сервера
       const result = await response.json();
 
-      // Проверяем успешность ответа
       if (!response.ok) {
         throw new Error(`Ошибка при отправке данных: ${result.message || 'Неизвестная ошибка'}`);
       }
 
       console.log('Ответ от сервера:', result);
 
-      // После успешной отправки, скрываем форму и показываем уведомление
-      setFormVisible(false);
-      setButtonVisible(false);
-      setNotificationVisible(true);
+      // Скрываем форму и кнопку после успешной отправки
+      setTimeout(() => {
+        setFormVisible(false);
+        setButtonVisible(false);
+        setNotificationVisible(true);
+      }, 500); // Даем небольшой промежуток для завершения анимации
 
-      // Скрываем уведомление через 3 секунды
+      // Через 2 сек скрываем уведомление
       setTimeout(() => setNotificationVisible(false), 2000);
 
     } catch (error) {
       console.error('Ошибка:', error);
+    } finally {
+      setIsLoading(false); // Завершаем загрузку
     }
   };
-
-
-  // Элементы анимации
-  const titleVariants = {
-    hidden: {opacity: 0, y: -50},
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {duration: 1, ease: 'easeOut', delay: 0.5} // Добавили задержку и смягчение
-    },
-  };
-
-  const formVariants = {
-    hidden: {opacity: 0, y: -70},
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {duration: 0.8, ease: 'easeInOut', delay: 0.3} // Сделали форму чуть быстрее
-    },
-  };
-
-  const buttonVariants = {
-    hidden: {opacity: 0, y: 50},
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {duration: 0.8, ease: 'easeOut', delay: 0.7} // Кнопку делаем самой последней
-    },
-  };
-
-  const notificationVariants = {
-    hidden: {opacity: 0, scale: 0.9},
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {duration: 0.5, ease: 'easeOut'} // Быстрое появление уведомления
-    },
-  };
-
 
   return (
     <section
@@ -110,11 +68,10 @@ const Hero = () => {
       className="relative bg-center"
       style={{
         backgroundImage: `url(${mainImage})`,
-        backgroundSize: 'cover', // Растягиваем изображение, сохраняя пропорции
+        backgroundSize: 'cover',
         backgroundPosition: 'center 60%',
       }}
     >
-      {/* Затемняем фон */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
       <Parallax speed={-10}>
@@ -122,16 +79,13 @@ const Hero = () => {
           className="container text-gray-200 mx-auto text-center relative z-10 text-white flex flex-col justify-between py-8 sm:py-4 h-full sm:h-auto"
           initial="hidden"
           animate="visible"
-          variants={titleVariants}
         >
-          {/* Заголовок */}
           <h2 className="text-3xl text-gray-200 sm:text-5xl font-bold sm:font-semibold sm:mb-0 lg:mb-24 mb-20">
             Вернем жизнь вашей технике быстро и с гарантией!
           </h2>
         </motion.div>
       </Parallax>
 
-      {/* Контейнер для формы и кнопки */}
       <div className="flex flex-col justify-center items-center lg:mt-32 w-full px-5">
         {/* Форма */}
         {formVisible && (
@@ -139,7 +93,6 @@ const Hero = () => {
             className="relative z-10 bg-gray-800 bg-opacity-80 p-6 rounded-md text-white shadow-lg w-full md:w-96"
             initial="hidden"
             animate="visible"
-            variants={formVariants}
           >
             <h3 className="text-2xl text-gray-200 mb-6 text-center">Оставьте заявку</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -149,7 +102,7 @@ const Hero = () => {
                   type="text"
                   placeholder="Ваше имя"
                   className="w-full p-3 bg-gray-700 text-white rounded-md"
-                  {...register('name', {required: 'Имя обязательно'})}
+                  {...register('name', { required: 'Имя обязательно' })}
                 />
                 {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
               </div>
@@ -160,7 +113,7 @@ const Hero = () => {
                   type="tel"
                   placeholder="Ваш телефон"
                   className="w-full p-3 bg-gray-700 text-white rounded-md"
-                  {...register('phone', {required: 'Номер обязателен'})}
+                  {...register('phone', { required: 'Номер обязателен' })}
                 />
                 {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
               </div>
@@ -168,20 +121,15 @@ const Hero = () => {
           </motion.div>
         )}
 
-        {/* Кнопка "Заказать мастера", расположенная внизу */}
+        {/* Кнопка "Заказать мастера" */}
         {buttonVisible && (
-          <motion.div
-            className="mt-8 mb-8"
-            initial="hidden"
-            animate="visible"
-            variants={buttonVariants}
-          >
+          <motion.div className="mt-8 mb-8">
             <button
-              className="relative z-10 bg-gray-900 text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
-              onClick={handleClick}
-              disabled={isLoading} // Блокируем кнопку во время загрузки
+              className="relative z-10 bg-gray-900 w-[180px] text-gray-200 py-3 px-6 rounded-full text-xl hover:bg-orange-600 transition duration-300"
+              onClick={handleSubmit(onSubmit)} // Теперь handleSubmit сразу вызывает onSubmit
+              disabled={isLoading}
             >
-              {isLoading ? "Загрузка..." : "Заказать мастера"}
+              {isLoading ? `Загрузка${loadingDots}` : "Заказать мастера"}
             </button>
           </motion.div>
         )}
@@ -192,7 +140,6 @@ const Hero = () => {
             className="mb-8 z-10 bg-green-500 bg-opacity-50 text-white p-8 rounded-md shadow-lg text-3xl"
             initial="hidden"
             animate="visible"
-            variants={notificationVariants}
           >
             <p className="text-center">Вам перезвонят!</p>
           </motion.div>
