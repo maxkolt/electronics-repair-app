@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Parallax } from 'react-scroll-parallax';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -10,12 +10,27 @@ const Hero = () => {
   const [buttonVisible, setButtonVisible] = useState(true);  // Состояние для кнопки
   const [notificationVisible, setNotificationVisible] = useState(false);  // Состояние для уведомления
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingDots, setLoadingDots] = useState("");
+
+  // Анимация точек во время загрузки
+  useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setLoadingDots((prev) => (prev.length < 3 ? prev + "." : ""));
+      }, 300); // Интервал смены точек (0.3 сек)
+
+      return () => clearInterval(interval);
+    } else {
+      setLoadingDots(""); // Сброс после завершения загрузки
+    }
+  }, [isLoading]);
 
   const handleClick = async () => {
-    setIsLoading(true); // Начинаем загрузку
-    await handleSubmit(onSubmit)(); // Выполняем отправку формы
-    setIsLoading(false); // Останавливаем загрузку после завершения
+    setIsLoading(true);
+    await handleSubmit(onSubmit)(); // Отправляем форму
+    setIsLoading(false);
   };
+
   const onSubmit = async (data) => {
     try {
       // Отправка данных на сервер
@@ -164,17 +179,16 @@ const Hero = () => {
             <button
               className={`relative z-10 py-3 px-6 rounded-full text-xl transition duration-300 ${
                 isLoading
-                  ? "bg-orange-500 text-white cursor-not-allowed"
+                  ? "bg-orange-500 text-gray-200 cursor-not-allowed"
                   : "bg-gray-900 text-gray-200 hover:bg-orange-600"
               }`}
               onClick={handleClick}
-              disabled={isLoading} // Отключаем кнопку во время загрузки
+              disabled={isLoading}
             >
-              {isLoading ? "Загрузка..." : "Заказать мастера"}
+              {isLoading ? `Загрузка${loadingDots}` : "Заказать мастера"}
             </button>
           </motion.div>
         )}
-
 
         {/* Уведомление о успешной отправке */}
         {notificationVisible && (

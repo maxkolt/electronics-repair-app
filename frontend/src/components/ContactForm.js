@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ContactForm = () => {
   const [notificationVisible, setNotificationVisible] = useState(false);  // Состояние для уведомления
+  const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
+  const [loadingDots, setLoadingDots] = useState(""); // Анимация точек
+
+  useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setLoadingDots((prev) => (prev.length < 3 ? prev + "." : ""));
+      }, 500); // Интервал смены точек (0.5 сек)
+
+      return () => clearInterval(interval);
+    } else {
+      setLoadingDots(""); // Сброс точек после завершения загрузки
+    }
+  }, [isLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData(e.target);
 
     const data = {
@@ -30,17 +45,19 @@ const ContactForm = () => {
         throw new Error('Ошибка при отправке данных');
       }
 
-      // После успешной отправки, показываем уведомление
+      // Показываем уведомление о успешной отправке
       setNotificationVisible(true);
 
-      // Скрываем уведомление через 3 секунды
+      // Скрываем уведомление через 2 секунды
       setTimeout(() => setNotificationVisible(false), 2000);
 
-      // Очищаем форму после отправки
+      // Очищаем форму
       e.target.reset();
 
     } catch (error) {
       console.error('Ошибка:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,12 +80,13 @@ const ContactForm = () => {
             className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
             required
           />
-          {/* Кнопка отправки */}
+          {/* Кнопка отправки с индикатором загрузки */}
           <button
             type="submit"
             className="bg-gray-900 text-white py-2 px-6 rounded-full text-lg hover:bg-orange-600 transition duration-300 w-auto mt-4"
+            disabled={isLoading} // Деактивируем кнопку во время загрузки
           >
-            Заказать мастера
+            {isLoading ? `Загрузка${loadingDots}` : "Заказать мастера"}
           </button>
         </form>
 
