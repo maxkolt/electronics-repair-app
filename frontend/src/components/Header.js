@@ -15,18 +15,18 @@ const Header = () => {
           </a>
         </h1>
 
-        {/* Плашка скидки */}
+        {/* Плашка скидки с эффектом падения через 2 секунды */}
         <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: '100%' }}
-          transition={{ duration: 0.8, ease: 'easeInOut' }}
-          className="w-full md:w-auto flex items-center justify-center px-4 py-2 border border-gray-200 text-gray-200 text-xs md:text-sm rounded-lg overflow-hidden"
+          initial={{y: -100, opacity: 0, scale: 0.8}}
+          animate={{y: 0, opacity: 1, scale: 1}}
+          transition={{delay: 1.3, type: "spring", stiffness: 100, damping: 10, duration: 1}}
+            className="font-secondary relative flex items-center justify-center px-3 tracking-widest text-gray-300 text-base md:text-lg shadow-inner"
         >
-          Скидка 15% при заказе с сайта
+          Скидка&nbsp;<span className="text-gray-100 font-semibold md:font-bold">10%</span>&nbsp;при заказе с сайта
         </motion.div>
 
         {/* Контакты */}
-        <div className="flex space-x-4 md:space-x-6">
+        <div className="flex space-x-6 md:space-x-6">
           <a
             href="https://t.me/OnORepair"
             className="text-white hover:text-gray-400 transform hover:scale-110 transition duration-300"
