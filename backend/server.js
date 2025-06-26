@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path'); // 👈 добавили path
 const userRoutes = require('./routes/userRoutes');
 const sitemapRouter = require("./routes/sitemap");
 
@@ -25,11 +26,12 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Основные маршруты
 app.use("/api", userRoutes);
-app.use("/sitemap.xml", sitemapRouter); // корректный путь
+app.use("/sitemap.xml", sitemapRouter);
 
-// Тестовый маршрут
-app.get('/', (req, res) => {
-  res.send('Backend is running');
+// 👇 СТАТИЧЕСКИЕ ФАЙЛЫ (React билд)
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Проверка здоровья (Fly.io будет использовать)
