@@ -1,24 +1,31 @@
-# Stage 1: Build frontend
-FROM node:18 AS build-frontend
-WORKDIR /frontend
-COPY frontend/package.json frontend/package-lock.json ./
+# ===== СТАДИЯ 1: билд React frontend =====
+FROM node:18 AS frontend-build
+
+WORKDIR /app/frontend
+
+COPY frontend/package*.json ./
 RUN npm install
+
 COPY frontend/ ./
 RUN npm run build
 
-# Stage 2: Run backend with built frontend
+# ===== СТАДИЯ 2: backend + билд =====
 FROM node:18
+
 WORKDIR /app
 
-# Устанавливаем backend зависимости
-COPY backend/package.json backend/package-lock.json ./
-RUN npm install
+# Установим зависимости backend
+COPY backend/package*.json ./backend/
+RUN cd backend && npm install
 
 # Копируем backend код
-COPY backend/ ./
+COPY backend/ ./backend/
 
-# Копируем собранный frontend в public
-COPY --from=build-frontend /frontend/build ./public
+# Копируем собранный frontend build в backend/public
+COPY --from=frontend-build /app/frontend/build ./backend/public
 
-# Запускаем сервер
+# Переключаемся в директорию backend
+WORKDIR /app/backend
+
+# Запуск
 CMD ["node", "server.js"]
