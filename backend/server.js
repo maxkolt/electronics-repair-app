@@ -8,7 +8,7 @@ const sitemapRouter = require("./routes/sitemap");
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5050;
 
 const corsOptions = {
   origin: ['https://onorrem.ru', 'https://api.onorrem.ru', 'https://www.onorrem.ru'],

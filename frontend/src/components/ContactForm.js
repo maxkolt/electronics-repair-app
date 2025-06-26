@@ -1,58 +1,49 @@
 import React, { useState, useEffect } from 'react';
 
 const ContactForm = () => {
-  const [notificationVisible, setNotificationVisible] = useState(false);  // Состояние для уведомления
-  const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
-  const [loadingDots, setLoadingDots] = useState(""); // Анимация точек
+  const [notificationVisible, setNotificationVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingDots, setLoadingDots] = useState("");
+  const [consentGiven, setConsentGiven] = useState(true); // По умолчанию: согласие дано
 
   useEffect(() => {
     if (isLoading) {
       const interval = setInterval(() => {
         setLoadingDots((prev) => (prev.length < 3 ? prev + "." : ""));
-      }, 500); // Интервал смены точек (0.5 сек)
-
+      }, 500);
       return () => clearInterval(interval);
     } else {
-      setLoadingDots(""); // Сброс точек после завершения загрузки
+      setLoadingDots("");
     }
   }, [isLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!consentGiven) return alert("Необходимо согласие на обработку персональных данных");
+
     setIsLoading(true);
     const formData = new FormData(e.target);
-
     const data = {
       name: formData.get('name'),
       phone: formData.get('phone'),
     };
 
     try {
-      // Отправка данных на сервер
       const response = await fetch('https://electronics-repair-app.onrender.com/api/saveUser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
-      // Логируем ответ от сервера
       const result = await response.json();
       console.log('Ответ от сервера:', result);
 
-      if (!response.ok) {
-        throw new Error('Ошибка при отправке данных');
-      }
+      if (!response.ok) throw new Error('Ошибка при отправке данных');
 
-      // Показываем уведомление о успешной отправке
       setNotificationVisible(true);
-
-      // Скрываем уведомление через 2 секунды
       setTimeout(() => setNotificationVisible(false), 2000);
-
-      // Очищаем форму
       e.target.reset();
+      setConsentGiven(true); // Возвращаем флаг в true
 
     } catch (error) {
       console.error('Ошибка:', error);
@@ -66,6 +57,7 @@ const ContactForm = () => {
       <div className="container mx-auto text-center">
         <h3 className="text-3xl font-semibold mb-6">Оставьте заявку</h3>
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 shadow-lg rounded-lg">
+
           <input
             type="text"
             name="name"
@@ -80,21 +72,47 @@ const ContactForm = () => {
             className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
             required
           />
-          {/* Кнопка отправки с индикатором загрузки */}
+
+          {/* Кастомный чекбокс */}
+          <label onClick={() => setConsentGiven(!consentGiven)} className="flex items-center mb-4 cursor-pointer select-none">
+            <div
+              className={`w-5 h-5 flex items-center justify-center rounded border border-gray-300 mr-2 ${
+                consentGiven ? 'bg-gray-900' : 'bg-white'
+              }`}
+            >
+              {consentGiven && (
+                <svg
+                  className="w-4 h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </div>
+            <p className="text-xs text-gray-900 underline decoration-gray-400 underline-offset-2 leading-snug">
+              Я даю согласие на обработку персональных данных
+            </p>
+          </label>
+
           <button
             type="submit"
-            className="bg-gray-900 text-white py-2 px-6 rounded-full text-lg hover:bg-orange-600 transition duration-300 w-auto mt-4"
-            disabled={isLoading} // Деактивируем кнопку во время загрузки
+            className={`py-2 px-6 rounded-full text-lg transition duration-300 w-auto mt-4 ${
+              consentGiven
+                ? 'bg-gray-900 text-white hover:bg-orange-600'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+            disabled={isLoading || !consentGiven}
           >
             {isLoading ? `Загрузка${loadingDots}` : "Заказать мастера"}
           </button>
         </form>
 
-        {/* Уведомление о успешной отправке */}
         {notificationVisible && (
           <div className="flex justify-center items-center mt-10">
-            <div
-              className="bg-green-500 bg-opacity-70 text-white p-6 rounded-md shadow-lg text-2xl w-80 max-w-full mx-auto">
+            <div className="bg-green-500 bg-opacity-70 text-white p-6 rounded-md shadow-lg text-2xl w-80 max-w-full mx-auto">
               Вам перезвонят!
             </div>
           </div>
