@@ -29,7 +29,7 @@ const ContactForm = () => {
     };
 
     try {
-      const response = await fetch('https://electronics-repair-app.onrender.com/api/saveUser', {
+      const response = await fetch('https://onorrem.ru/api/saveUser', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

@@ -33,7 +33,7 @@ const Hero = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('https://api.onorrem.ru/api/saveUser', {
+      const response = await fetch('https://onorrem.ru/api/saveUser', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
